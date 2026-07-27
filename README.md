@@ -1,8 +1,4 @@
-# SeasonYmlFramework
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/USERNAME/SeasonYmlFramework/main/assets/logo.png" width="180"/>
-</p>
+# SeasonYamlFramework
 
 <p align="center">
     <b>Lightweight annotation-based YAML configuration framework for Kotlin and Java.</b>
@@ -12,20 +8,28 @@
     Automatically map objects to YAML files with minimal boilerplate.
 </p>
 
+<p align="center">
+    <a href="https://github.com/Parham099/SeasonYamlFramework">GitHub</a>
+    •
+    <a href="https://github.com/Parham099/SeasonYamlFramework/wiki">Wiki</a>
+    •
+    <a href="https://jitpack.io/#Parham099/SeasonYamlFramework">JitPack</a>
+</p>
+
 ---
 
 # Features
 
-- ✅ Annotation-based configuration
-- ✅ Kotlin & Java support
-- ✅ Automatic serialization/deserialization
-- ✅ Nested configuration objects
-- ✅ Type-safe API
-- ✅ Lightweight
-- ✅ Built on SnakeYAML
-- ✅ No Kotlin Reflection dependency
-- ✅ Simple API
-- ✅ Easy integration
+* ✅ Annotation-based configuration
+* ✅ Kotlin & Java support
+* ✅ Automatic serialization/deserialization
+* ✅ Nested configuration objects
+* ✅ Type-safe API
+* ✅ Lightweight
+* ✅ Built on SnakeYAML
+* ✅ No Kotlin Reflection dependency
+* ✅ Simple API
+* ✅ Easy integration
 
 ---
 
@@ -34,8 +38,12 @@
 ## Gradle (Kotlin DSL)
 
 ```kotlin
+repositories {
+    maven("https://jitpack.io")
+}
+
 dependencies {
-    implementation("GROUP:season-yml-framework:VERSION")
+    implementation("com.github.Parham099:SeasonYamlFramework:VERSION")
 }
 ```
 
@@ -44,8 +52,12 @@ dependencies {
 ## Gradle (Groovy)
 
 ```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
-    implementation "GROUP:season-yml-framework:VERSION"
+    implementation "com.github.Parham099:SeasonYamlFramework:VERSION"
 }
 ```
 
@@ -54,12 +66,23 @@ dependencies {
 ## Maven
 
 ```xml
-<dependency>
-    <groupId>GROUP</groupId>
-    <artifactId>season-yml-framework</artifactId>
-    <version>VERSION</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.Parham099</groupId>
+        <artifactId>SeasonYamlFramework</artifactId>
+        <version>VERSION</version>
+    </dependency>
+</dependencies>
 ```
+
+> Replace `VERSION` with the latest GitHub release tag (for example `1.0.0`).
 
 ---
 
@@ -166,9 +189,13 @@ Database:
 
 Defines the configuration file.
 
+### Kotlin
+
 ```kotlin
 @Config("config.yml")
 ```
+
+### Java
 
 ```java
 @Config(filePath = "config.yml")
@@ -180,10 +207,14 @@ Defines the configuration file.
 
 Marks a field to be serialized.
 
+### Kotlin
+
 ```kotlin
 @ConfigField
 var language = "en"
 ```
+
+### Java
 
 ```java
 @ConfigField
@@ -196,10 +227,14 @@ public static String language = "en";
 
 Creates a nested YAML section.
 
+### Kotlin
+
 ```kotlin
 @SubConfigObject
 object Database
 ```
+
+### Java
 
 ```java
 @SubConfigObject
@@ -278,9 +313,13 @@ Messages:
 
 Load configuration
 
+### Kotlin
+
 ```kotlin
 ConfigProcessor.loadYamlObject(MyConfig::class.java)
 ```
+
+### Java
 
 ```java
 ConfigProcessor.INSTANCE.loadYamlObject(MyConfig.class);
@@ -288,9 +327,13 @@ ConfigProcessor.INSTANCE.loadYamlObject(MyConfig.class);
 
 Save configuration
 
+### Kotlin
+
 ```kotlin
 ConfigProcessor.saveYamlObject(MyConfig::class.java)
 ```
+
+### Java
 
 ```java
 ConfigProcessor.INSTANCE.saveYamlObject(MyConfig.class);
@@ -300,28 +343,29 @@ ConfigProcessor.INSTANCE.saveYamlObject(MyConfig.class);
 
 # Documentation
 
-The complete documentation is available in the GitHub Wiki.
+Complete documentation is available in the GitHub Wiki.
 
-- Getting Started
-- Installation
-- Configuration Objects
-- ConfigField
-- SubConfigObject
-- Custom Paths
-- API Reference
-- Examples
-- Best Practices
+* Getting Started
+* Installation
+* Configuration Objects
+* ConfigField
+* SubConfigObject
+* Custom Paths
+* API Reference
+* Examples
+* Best Practices
+* FAQ
 
 ---
 
 # Contributing
 
-Contributions are welcome.
+Contributions, bug reports, and feature requests are welcome.
 
-Feel free to open an Issue or submit a Pull Request.
+If you encounter a bug or have an idea for an improvement, feel free to open an Issue or submit a Pull Request.
 
 ---
 
 # License
 
-MIT License
+This project is licensed under the MIT License.
