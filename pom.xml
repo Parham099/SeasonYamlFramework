@@ -6,7 +6,7 @@
 
     <groupId>ir.parham099.seasonYamlProcessor</groupId>
     <artifactId>SeasonYmlFramework</artifactId>
-    <version>0.0.4-R</version>
+    <version>0.0.5-R</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
