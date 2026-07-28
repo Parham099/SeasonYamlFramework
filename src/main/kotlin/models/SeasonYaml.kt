@@ -5,6 +5,7 @@ interface SeasonYaml {
     operator fun <T> set(path: String, new: T?)
     fun remove(path: String)
     operator fun minusAssign(path: String)
+    fun clear()
     fun save()
     fun reload()
 }

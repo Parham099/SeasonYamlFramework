@@ -31,6 +31,10 @@ class FileYaml(val yamlFile: File) : SeasonYaml {
         remove(path)
     }
 
+    override fun clear() {
+        yamlData.clear()
+    }
+
     override fun save() {
         yamlFile.writeText(yaml.dump(yamlData))
     }

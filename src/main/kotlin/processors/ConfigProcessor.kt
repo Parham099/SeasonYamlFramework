@@ -24,11 +24,14 @@ object ConfigProcessor {
     }
 
     private fun loadClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
-        `class`.declaredFields.forEach {
-            if (it.getAnnotation(ConfigField::class.java) != null) {
-                it.isAccessible = true
-                it.set(`class`, yaml[yamlPath + it.name])
+        for (it in `class`.declaredFields) {
+            val configField = it.getAnnotation(ConfigField::class.java) ?: continue
+            var path = configField.customPath
+            if (path.isEmpty()) {
+                path = yamlPath + it.name
             }
+            it.isAccessible = true
+            it.set(`class`, yaml[path])
         }
 
         for (subClass in `class`.declaredClasses) {
@@ -50,6 +53,8 @@ object ConfigProcessor {
             ymlFile.createNewFile()
         }
         val yaml = FileYaml(ymlFile)
+        // remove old objects
+        yaml.clear()
         // save object and it subclasses
         saveClassFields(
             `class` = `class`,
@@ -60,11 +65,14 @@ object ConfigProcessor {
     }
 
     private fun saveClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
-        `class`.declaredFields.forEach {
-            if (it.getAnnotation(ConfigField::class.java) != null) {
-                it.isAccessible = true
-                yaml[yamlPath + it.name] = it.get(`class`)
+        for (it in `class`.declaredFields) {
+            val configField = it.getAnnotation(ConfigField::class.java) ?: continue
+            var path = configField.customPath
+            if (path.isEmpty()) {
+                path = yamlPath + it.name
             }
+            it.isAccessible = true
+            yaml[path] = it.get(`class`)
         }
 
         for (subClass in `class`.declaredClasses) {
