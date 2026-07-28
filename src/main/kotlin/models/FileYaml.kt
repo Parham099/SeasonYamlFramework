@@ -49,48 +49,78 @@ class FileYaml(val yamlFile: File) : SeasonYaml {
     }
 
     private fun getByPath(path: String): Any? {
-        try {
-            val pathArray = path.split('.')
-            var data: MutableMap<String, Any?> = yamlData
-            for ((index, arg) in pathArray.withIndex()) {
-                if (index != pathArray.lastIndex) {
-                    data = data[arg] as MutableMap<String, Any?>
-                } else {
-                    return data[arg]
+        var current: Any? = yamlData
+
+        for (part in path.split('.')) {
+            current = when (current) {
+                is Map<*, *> -> current[part]
+
+                is List<*> -> {
+                    val index = part.toIntOrNull() ?: return null
+                    current.getOrNull(index)
                 }
+
+                else -> return null
             }
-        } catch (exc: Exception) {
-            println("Please report this error in project repository issues to fix it!")
-            exc.printStackTrace()
         }
 
-        return null
+        return current
     }
 
-    private fun setByPath(path: String, new: Any?) {
-        val pathArray = path.split('.')
-        var data: MutableMap<String, Any?> = yamlData
-        for ((index, arg) in pathArray.withIndex()) {
-            if (index != pathArray.lastIndex) {
-                if (!data.containsKey(arg)) {
-                    data[arg] = mutableMapOf<String, Any?>()
-                }
-                data = data[arg] as MutableMap<String, Any?>
+    private fun setByPath(path: String, value: Any?) {
+        val parts = path.split('.')
+        var current = yamlData as MutableMap<String, Any?>
+
+        for (i in 0 until parts.lastIndex) {
+            val key = parts[i]
+
+            val next = current[key]
+            if (next !is MutableMap<*, *>) {
+                val newMap = mutableMapOf<String, Any?>()
+                current[key] = newMap
+                current = newMap
             } else {
-                data[arg] = new
+                @Suppress("UNCHECKED_CAST")
+                current = next as MutableMap<String, Any?>
             }
         }
+
+        current[parts.last()] = value
     }
 
-    private fun removeByPath(path: String) {
-        val pathArray = path.split('.')
-        var data: MutableMap<String, Any?> = yamlData
-        for ((index, arg) in pathArray.withIndex()) {
-            if (index != pathArray.lastIndex) {
-                data = data[arg] as? MutableMap<String, Any?> ?: return
-            } else {
-                data.remove(arg)
+    private fun removeByPath(path: String): Boolean {
+        val parts = path.split('.')
+        var current: Any? = yamlData
+
+        for (i in 0 until parts.lastIndex) {
+            current = when (current) {
+                is MutableMap<*, *> -> current[parts[i]]
+                is MutableList<*> -> {
+                    val index = parts[i].toIntOrNull() ?: return false
+                    current.getOrNull(index)
+                }
+
+                else -> return false
             }
+        }
+
+        return when (current) {
+            is MutableMap<*, *> -> {
+                @Suppress("UNCHECKED_CAST")
+                (current as MutableMap<String, Any?>).remove(parts.last()) != null
+            }
+
+            is MutableList<*> -> {
+                val index = parts.last().toIntOrNull() ?: return false
+
+                @Suppress("UNCHECKED_CAST")
+                val list = current as MutableList<Any?>
+                if (index !in list.indices) return false
+                list.removeAt(index)
+                true
+            }
+
+            else -> false
         }
     }
 }
