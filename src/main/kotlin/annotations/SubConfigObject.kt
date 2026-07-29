@@ -2,4 +2,6 @@ package annotations
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SubConfigObject()
+annotation class SubConfigObject(
+    val name: String = ""
+)
