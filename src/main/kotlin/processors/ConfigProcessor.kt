@@ -26,7 +26,7 @@ object ConfigProcessor {
     private fun loadClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
-            var path = configField.customPath
+            var path = yamlPath + configField.customPath
             if (path.isEmpty()) {
                 path = yamlPath + it.name
             }
@@ -41,6 +41,7 @@ object ConfigProcessor {
             if (!subConfigAnnotation.name.isEmpty()) {
                 yamlPath = subConfigAnnotation.name
             }
+
             loadClassFields(
                 `class` = subClass,
                 yaml = yaml,
@@ -71,7 +72,7 @@ object ConfigProcessor {
     private fun saveClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
-            var path = configField.customPath
+            var path = yamlPath + configField.customPath
             if (path.isEmpty()) {
                 path = yamlPath + it.name
             }
@@ -86,6 +87,7 @@ object ConfigProcessor {
             if (!subConfigAnnotation.name.isEmpty()) {
                 yamlPath = subConfigAnnotation.name
             }
+
             saveClassFields(
                 `class` = subClass,
                 yaml = yaml,
