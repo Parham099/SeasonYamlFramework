@@ -38,7 +38,7 @@ object ConfigProcessor {
             if (subClass.isSynthetic) continue
             val subConfigAnnotation = subClass.getAnnotation(SubConfigObject::class.java) ?: continue
             var yamlPath = subClass.simpleName
-            if (subConfigAnnotation.name.isEmpty()) {
+            if (!subConfigAnnotation.name.isEmpty()) {
                 yamlPath = subConfigAnnotation.name
             }
             loadClassFields(
@@ -83,7 +83,7 @@ object ConfigProcessor {
             if (subClass.isSynthetic) continue
             val subConfigAnnotation = subClass.getAnnotation(SubConfigObject::class.java) ?: continue
             var yamlPath = subClass.simpleName
-            if (subConfigAnnotation.name.isEmpty()) {
+            if (!subConfigAnnotation.name.isEmpty()) {
                 yamlPath = subConfigAnnotation.name
             }
             saveClassFields(
