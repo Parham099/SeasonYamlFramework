@@ -36,15 +36,14 @@ object ConfigProcessor {
         for (subClass in `class`.declaredClasses) {
             if (subClass.isSynthetic) continue
             val subConfigAnnotation = subClass.getAnnotation(SubConfigObject::class.java) ?: continue
-            var yamlPath = subClass.simpleName
-            if (!subConfigAnnotation.name.isEmpty()) {
-                yamlPath = subConfigAnnotation.name
+            val nextYamlPath = yamlPath + subConfigAnnotation.name.ifEmpty {
+                subClass.simpleName
             }
 
             loadClassFields(
                 `class` = subClass,
                 yaml = yaml,
-                yamlPath = "$yamlPath."
+                yamlPath = "$nextYamlPath."
             )
         }
     }
@@ -81,15 +80,14 @@ object ConfigProcessor {
         for (subClass in `class`.declaredClasses) {
             if (subClass.isSynthetic) continue
             val subConfigAnnotation = subClass.getAnnotation(SubConfigObject::class.java) ?: continue
-            var yamlPath = subClass.simpleName
-            if (!subConfigAnnotation.name.isEmpty()) {
-                yamlPath = subConfigAnnotation.name
+            val nextYamlPath = yamlPath + subConfigAnnotation.name.ifEmpty {
+                subClass.simpleName
             }
 
             saveClassFields(
                 `class` = subClass,
                 yaml = yaml,
-                yamlPath = "$yamlPath."
+                yamlPath = "$nextYamlPath."
             )
         }
     }
