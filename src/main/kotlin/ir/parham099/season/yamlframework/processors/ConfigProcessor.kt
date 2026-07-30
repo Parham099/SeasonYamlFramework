@@ -7,7 +7,24 @@ import ir.parham099.season.yamlframework.models.FileYaml
 import ir.parham099.season.yamlframework.models.SeasonYaml
 import java.io.File
 
+/**
+ * Processes configuration objects annotated with [Config].
+ *
+ * This processor is responsible for loading values from YAML files into
+ * configuration objects and saving configuration objects back to YAML files.
+ *
+ * It recursively traverses nested configuration objects annotated with
+ * [SubConfigObject] and processes all fields annotated with [ConfigField].
+ */
 object ConfigProcessor {
+    /**
+     * Loads the values of the specified configuration object from its YAML file.
+     *
+     * The target class must be annotated with [Config]. If the configuration
+     * file does not exist, it will be created automatically.
+     *
+     * @param class the configuration object class to load.
+     */
     fun loadYamlObject(`class`: Class<*>) {
         val configAnnotation = `class`.getAnnotation(Config::class.java) ?: return
         val filePath = configAnnotation.filePath
@@ -23,6 +40,17 @@ object ConfigProcessor {
         )
     }
 
+    /**
+     * Recursively loads all configuration fields of the given class and its
+     * nested configuration objects.
+     *
+     * Only fields annotated with [ConfigField] are processed. Nested classes
+     * annotated with [SubConfigObject] are traversed recursively.
+     *
+     * @param class the current configuration class being processed.
+     * @param yaml the YAML source.
+     * @param yamlPath the current YAML path prefix.
+     */
     private fun loadClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
@@ -48,6 +76,16 @@ object ConfigProcessor {
         }
     }
 
+    /**
+     * Saves the values of the specified configuration object into its YAML file.
+     *
+     * The target class must be annotated with [Config]. If the configuration
+     * file does not exist, it will be created automatically.
+     *
+     * Existing YAML content is cleared before writing the current configuration.
+     *
+     * @param class the configuration object class to save.
+     */
     fun saveYamlObject(`class`: Class<*>) {
         val configAnnotation = `class`.getAnnotation(Config::class.java) ?: return
         val filePath = configAnnotation.filePath
@@ -67,6 +105,17 @@ object ConfigProcessor {
         yaml.save()
     }
 
+    /**
+     * Recursively saves all configuration fields of the given class and its
+     * nested configuration objects.
+     *
+     * Only fields annotated with [ConfigField] are written. Nested classes
+     * annotated with [SubConfigObject] are traversed recursively.
+     *
+     * @param class the current configuration class being processed.
+     * @param yaml the destination YAML object.
+     * @param yamlPath the current YAML path prefix.
+     */
     private fun saveClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
