@@ -1,0 +1,17 @@
+test: test
+GitHub:
+  main: https://github.com
+  api: https://api.github.com
+  raw: https://raw.githubusercontent.com
+Google:
+  search: https://google.com
+  maps: https://maps.google.com
+  drive: https://drive.google.com
+JetBrains:
+  website: https://jetbrains.com
+  kotlin: https://kotlinlang.org
+  exposed: https://github.com/JetBrains/Exposed
+  Products:
+    idea: IntelliJ IDEA
+    pycharm: PyCharm
+    rider: Rider
