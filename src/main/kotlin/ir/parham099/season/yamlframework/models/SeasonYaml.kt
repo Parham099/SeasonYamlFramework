@@ -1,4 +1,4 @@
-package models
+package ir.parham099.season.yamlframework.models
 
 interface SeasonYaml {
     operator fun <T> get(path: String, default: T? = null): T?

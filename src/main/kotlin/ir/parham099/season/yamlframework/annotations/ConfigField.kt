@@ -1,4 +1,4 @@
-package annotations
+package ir.parham099.season.yamlframework.annotations
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)

@@ -1,8 +1,9 @@
-package models
+package ir.parham099.season.yamlframework.models
 
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import java.io.File
+import kotlin.collections.get
 
 class FileYaml(val yamlFile: File) : SeasonYaml {
     private var yamlData: MutableMap<String, Any?> = LinkedHashMap<String, Any?>()

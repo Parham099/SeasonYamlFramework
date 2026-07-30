@@ -1,10 +1,10 @@
-package processors
+package ir.parham099.season.yamlframework.processors
 
-import annotations.Config
-import annotations.ConfigField
-import annotations.SubConfigObject
-import models.FileYaml
-import models.SeasonYaml
+import ir.parham099.season.yamlframework.annotations.Config
+import ir.parham099.season.yamlframework.annotations.ConfigField
+import ir.parham099.season.yamlframework.annotations.SubConfigObject
+import ir.parham099.season.yamlframework.models.FileYaml
+import ir.parham099.season.yamlframework.models.SeasonYaml
 import java.io.File
 
 object ConfigProcessor {
@@ -26,9 +26,8 @@ object ConfigProcessor {
     private fun loadClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
-            var path = yamlPath + configField.customPath
-            if (path.isEmpty()) {
-                path = yamlPath + it.name
+            val path = yamlPath + configField.customPath.ifEmpty {
+                it.name
             }
             it.isAccessible = true
             it.set(`class`, yaml[path])
@@ -72,9 +71,8 @@ object ConfigProcessor {
     private fun saveClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
-            var path = yamlPath + configField.customPath
-            if (path.isEmpty()) {
-                path = yamlPath + it.name
+            val path = yamlPath + configField.customPath.ifEmpty {
+                it.name
             }
             it.isAccessible = true
             yaml[path] = it.get(`class`)
