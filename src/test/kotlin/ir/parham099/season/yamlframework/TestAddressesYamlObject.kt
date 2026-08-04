@@ -3,11 +3,22 @@ package ir.parham099.season.yamlframework
 import ir.parham099.season.yamlframework.annotations.Config
 import ir.parham099.season.yamlframework.annotations.ConfigField
 import ir.parham099.season.yamlframework.annotations.SubConfigObject
+import ir.parham099.season.yamlframework.models.YamlObjectMap
 
 @Config(TestStatics.addressesYamlPath)
 object TestAddressesYamlObject {
     @ConfigField
     var test: String = "test"
+
+    val companies = YamlObjectMap<Company>(
+        "companies",
+        Company::class.java
+    )
+
+    class Company(
+        val name: String,
+        val age: Int
+    )
 
     @SubConfigObject
     object Google {

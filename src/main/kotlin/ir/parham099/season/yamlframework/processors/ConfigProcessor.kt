@@ -5,6 +5,7 @@ import ir.parham099.season.yamlframework.annotations.ConfigField
 import ir.parham099.season.yamlframework.annotations.SubConfigObject
 import ir.parham099.season.yamlframework.models.FileYaml
 import ir.parham099.season.yamlframework.models.SeasonYaml
+import ir.parham099.season.yamlframework.models.YamlObjectMap
 import java.io.File
 
 /**
@@ -53,6 +54,12 @@ object ConfigProcessor {
      */
     private fun loadClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
+            if (it.type == YamlObjectMap::class.java) {
+                it.isAccessible = true
+                val value = it.get(`class`) as YamlObjectMap<*>
+                value.loadAll(yaml)
+                continue
+            }
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
             val path = yamlPath + configField.customPath.ifEmpty {
                 it.name
@@ -118,6 +125,12 @@ object ConfigProcessor {
      */
     private fun saveClassFields(`class`: Class<*>, yaml: SeasonYaml, yamlPath: String = "") {
         for (it in `class`.declaredFields) {
+            if (it.type == YamlObjectMap::class.java) {
+                it.isAccessible = true
+                val value = it.get(`class`) as YamlObjectMap<*>
+                value.saveAll(yaml)
+                continue
+            }
             val configField = it.getAnnotation(ConfigField::class.java) ?: continue
             val path = yamlPath + configField.customPath.ifEmpty {
                 it.name

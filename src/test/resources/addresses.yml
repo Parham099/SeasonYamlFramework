@@ -1,4 +1,11 @@
 test: test
+companies:
+  '0':
+    name: Parham
+    age: 220
+  '1':
+    name: Google
+    age: 999
 GitHub:
   main: https://github.com
   api: https://api.github.com
